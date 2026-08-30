@@ -1,0 +1,84 @@
+# Todyl
+
+> Todyl sells a single-agent, cloud-native cybersecurity platform to managed service providers,
+> solution providers and internal IT teams. One agent and one multi-tenant portal deliver SASE
+> (over Todyl's Secure Global Network), Endpoint Security (EDR/NGAV), a cloud-native SIEM, MXDR
+> with a 24x7 human SOC, GRC, and Security Automation playbooks. Todyl operates a live production
+> REST API at https://api.todyl.com, path-versioned at /v1, used by partners to read devices,
+> deployment groups and billing across their tenants.
+
+## What an agent can and cannot do with Todyl today
+
+- There is NO public API reference, NO public OpenAPI, and NO developer portal. Every path on
+  api.todyl.com — including /openapi.json, /v1/openapi.json and /.well-known/* — returns
+  HTTP 401 with {"error":{"code":"auth_missing_token", ...}}. The contract is not readable
+  without credentials.
+- The API reference lives inside Todyl's customer-authenticated knowledge base at
+  support.todyl.com, which serves a sign-in page at its root and is marked noindex/nofollow.
+- Todyl ships NO MCP server, NO A2A agent card, NO published SDK on any registry, and NO CLI.
+- Todyl DOES publish a machine-readable operational status feed (Atlassian Statuspage v2 API).
+
+## Authentication (verified by probe, 2026-08-30)
+
+- Scheme: paired API-key request headers, `X-Todyl-Client-Id` and `X-Todyl-Access-Token`.
+- Verification: an anonymous call returns error code `auth_missing_token`; sending both headers
+  with invalid values changes the code to `auth_malformed_token`, which is what proves the
+  service recognises those header names.
+- Tokens are created by a customer in the Todyl portal under Account -> Developer APIs ->
+  External API Tokens (https://portal.todyl.com/session/login).
+- No OAuth 2.0, no OpenID Connect, no published scope or permission reference.
+
+## Error envelope (verified by probe)
+
+    {"error":{"code":"auth_missing_token","message":"Credentials missing or invalid.","request_id":"req_<hex>"}}
+
+- Content type is `application/json`, NOT `application/problem+json` — this is not RFC 9457.
+- `error.request_id` is echoed in the `x-request-id` response header. Quote it to Todyl support.
+- Branch on `error.code`, not on `error.message`: both observed auth failures return the same
+  message string.
+
+## Rate limiting (observed, undocumented)
+
+- api.todyl.com is throttled at the Cloudflare edge. Exhaustion returns HTTP 429 with a
+  `text/plain` body `error code: 1015` and a `Retry-After` header (~90 seconds observed).
+- That 429 is NOT the JSON envelope above. A client that only parses JSON will not read the throttle.
+- No `RateLimit-*` or `X-RateLimit-*` headers on any response, so there is no budget signal
+  before exhaustion.
+
+## Resource paths (third-party evidence, treat as leads not contract)
+
+The only public client of this API is a community MCP server, https://github.com/shaank0/todyl-mcp
+(not built by Todyl). It calls:
+
+- `GET /v1/devices`
+- `GET /v1/deployment-groups`
+- `GET /v1/billing/invoices` (start_date, end_date)
+
+These are unverified against any Todyl-published document. Do not treat them as a contract.
+
+## Status
+
+- Status page: https://status.todyl.com
+- Machine-readable: https://status.todyl.com/api/v2/status.json (Atlassian Statuspage v2 API),
+  plus /api/v2/components.json and /api/v2/incidents.json.
+
+## Links
+
+- Website: https://www.todyl.com/
+- Platform overview: https://www.todyl.com/platform/platform-overview
+- Support: https://www.todyl.com/support
+- Knowledge base (login required): https://support.todyl.com/
+- Portal / sign in: https://portal.todyl.com/session/login
+- Pricing (lead form only, no published rates): https://www.todyl.com/request-pricing
+- Terms of Service: https://www.todyl.com/terms
+- Privacy Policy: https://www.todyl.com/privacy
+- System Description: https://www.todyl.com/system-description
+- Blog: https://www.todyl.com/blog (RSS: https://www.todyl.com/blog/rss.xml)
+- News: https://www.todyl.com/news
+- GitHub organisation: https://github.com/todylcom
+
+## Provenance
+
+Generated 2026-08-30 by the API Evangelist enrichment pipeline from live public probes and Todyl's
+own public pages. This file is NOT published by Todyl. Every claim above is either a recorded HTTP
+observation or a labelled third-party lead.

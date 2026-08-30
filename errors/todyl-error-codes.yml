@@ -1,0 +1,57 @@
+generated: '2026-08-30'
+method: probed
+source: Live unauthenticated responses from https://api.todyl.com/v1/devices on 2026-08-30
+api: Todyl External API
+format: vendor-json
+rfc9457: false
+envelope:
+  content_type: application/json
+  shape: |
+    {
+      "error": {
+        "code": "<machine-readable snake_case code>",
+        "message": "<human-readable message>",
+        "request_id": "req_<32 hex>"
+      }
+    }
+  fields:
+  - name: error.code
+    description: Stable machine-readable code. Observed values use snake_case.
+  - name: error.message
+    description: >-
+      Human-readable sentence. Deliberately non-specific for auth failures — both observed auth
+      codes return the identical message "Credentials missing or invalid.", so the code, not the
+      message, is the field a client must branch on.
+  - name: error.request_id
+    description: >-
+      Correlation identifier, prefix "req_". Echoed in the x-request-id response header, so an
+      agent can quote it to support without parsing the body.
+headers:
+- name: x-request-id
+  description: Same value as error.request_id; present on error responses.
+- name: x-content-type-options
+  value: nosniff
+error_codes:
+- code: auth_missing_token
+  status: 401
+  meaning: No Todyl credential headers were supplied on the request.
+  action: >-
+    Send X-Todyl-Client-Id and X-Todyl-Access-Token from an External API token created in the Todyl
+    portal.
+  observed: true
+- code: auth_malformed_token
+  status: 401
+  meaning: >-
+    Credential headers were supplied but could not be parsed or validated. Distinct from
+    auth_missing_token, which is how the header names were confirmed.
+  action: Re-issue the External API token pair; do not retry the same credentials.
+  observed: true
+coverage_note: >-
+  Only the anonymous error surface could be observed. Todyl publishes no public error reference, and
+  the rest of the catalog (4xx validation, 404, 409, 5xx) is behind the customer login, so this file
+  is a floor, not a complete catalog. Nothing here is inferred — every code listed was returned by
+  the live API to a probe recorded in `source`.
+rate_limit_errors:
+  note: >-
+    Rate limiting on api.todyl.com is enforced at the Cloudflare edge and does NOT use the JSON
+    envelope above — see rate-limits/todyl-rate-limits.yml.

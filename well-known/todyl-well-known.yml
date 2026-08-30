@@ -1,0 +1,149 @@
+generated: '2026-08-30'
+method: probed
+source: >-
+  Live unauthenticated GET probes of /.well-known/* on every Todyl host reachable from apis.yml
+  (www.todyl.com, api.todyl.com, support.todyl.com, status.todyl.com, developer.todyl.com,
+  portal.todyl.com).
+note: >-
+  No Todyl-served /.well-known document was found. www.todyl.com answers every /.well-known/* path
+  with a Webflow "Invalid .well-known request" 404 body. api.todyl.com requires credentials for
+  EVERY path, /.well-known/* included, so those probes return Todyl's 401 auth_missing_token
+  envelope rather than a document. developer.todyl.com and portal.todyl.com are the same
+  single-page-application shell and answer 200 with 908 bytes of HTML for every path — that is an
+  SPA catch-all, NOT a document, and is recorded as a miss. status.todyl.com DOES serve a valid
+  PGP-signed RFC 9116 security.txt at 200, but its Canonical is
+  https://www.atlassian.com/.well-known/security.txt and its Contact is security@atlassian.com — it
+  belongs to Atlassian Statuspage, the vendor hosting the CNAMEd status page, not to Todyl. It is
+  recorded here for completeness and deliberately NOT saved or credited to Todyl, and no WellKnown
+  or SecurityTxt pointer is emitted for this provider.
+hosts:
+- host: www.todyl.com
+  documents:
+  - path: /.well-known/security.txt
+    status: 404
+    file: null
+  - path: /.well-known/openid-configuration
+    status: 404
+    file: null
+  - path: /.well-known/oauth-authorization-server
+    status: 404
+    file: null
+  - path: /.well-known/api-catalog
+    status: 404
+    file: null
+  - path: /.well-known/ai-plugin.json
+    status: 404
+    file: null
+  - path: /.well-known/agent-card.json
+    status: 404
+    file: null
+  - path: /.well-known/agent.json
+    status: 404
+    file: null
+- host: api.todyl.com
+  documents:
+  - path: /.well-known/oauth-authorization-server
+    status: 401
+    file: null
+    note: Todyl JSON error envelope, code auth_missing_token — the API host authenticates every path.
+  - path: /.well-known/api-catalog
+    status: 401
+    file: null
+    note: Todyl JSON error envelope, code auth_missing_token.
+  - path: /.well-known/security.txt
+    status: 429
+    file: null
+    note: >-
+      Cloudflare rate-limit response (error code 1015, Retry-After ~90s). One attempt only; not
+      retried per the bounded-probe rule. Given every other path on this host answers 401, an
+      anonymous document here is very unlikely but was not observed either way.
+  - path: /.well-known/openid-configuration
+    status: 429
+    file: null
+    note: Cloudflare rate-limit (1015). One attempt only.
+  - path: /.well-known/agent-card.json
+    status: 429
+    file: null
+    note: Cloudflare rate-limit (1015). One attempt only.
+- host: support.todyl.com
+  documents:
+  - path: /.well-known/security.txt
+    status: 404
+    file: null
+  - path: /.well-known/openid-configuration
+    status: 404
+    file: null
+  - path: /.well-known/oauth-authorization-server
+    status: 404
+    file: null
+  - path: /.well-known/api-catalog
+    status: 404
+    file: null
+  - path: /.well-known/ai-plugin.json
+    status: 404
+    file: null
+  - path: /.well-known/agent-card.json
+    status: 404
+    file: null
+  - path: /.well-known/agent.json
+    status: 404
+    file: null
+- host: status.todyl.com
+  documents:
+  - path: /.well-known/security.txt
+    status: 200
+    file: null
+    note: >-
+      NOT Todyl's. Atlassian Statuspage vendor document — Canonical
+      https://www.atlassian.com/.well-known/security.txt, Contact security@atlassian.com. Not saved,
+      not credited.
+  - path: /.well-known/openid-configuration
+    status: 404
+    file: null
+  - path: /.well-known/oauth-authorization-server
+    status: 404
+    file: null
+  - path: /.well-known/api-catalog
+    status: 404
+    file: null
+  - path: /.well-known/ai-plugin.json
+    status: 404
+    file: null
+  - path: /.well-known/agent-card.json
+    status: 404
+    file: null
+  - path: /.well-known/agent.json
+    status: 404
+    file: null
+- host: developer.todyl.com
+  documents:
+  - path: /.well-known/agent-card.json
+    status: 200
+    file: null
+    note: >-
+      FALSE POSITIVE — 908-byte SPA shell (<!doctype html>, Vite module bundle, robots noindex).
+      Every path on this host returns the identical body. Recorded as a miss.
+  - path: /.well-known/agent.json
+    status: 200
+    file: null
+    note: Same SPA catch-all shell. Recorded as a miss.
+  - path: /.well-known/security.txt
+    status: 200
+    file: null
+    note: Same SPA catch-all shell. Recorded as a miss.
+  - path: /.well-known/openid-configuration
+    status: 200
+    file: null
+    note: Same SPA catch-all shell. Recorded as a miss.
+  - path: /.well-known/oauth-authorization-server
+    status: 200
+    file: null
+    note: Same SPA catch-all shell. Recorded as a miss.
+  - path: /.well-known/api-catalog
+    status: 200
+    file: null
+    note: Same SPA catch-all shell. Recorded as a miss.
+  - path: /.well-known/ai-plugin.json
+    status: 200
+    file: null
+    note: Same SPA catch-all shell. Recorded as a miss.

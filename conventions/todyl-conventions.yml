@@ -1,0 +1,105 @@
+generated: '2026-08-30'
+method: probed
+source: >-
+  Live unauthenticated probes of https://api.todyl.com on 2026-08-30 (auth, error envelope,
+  request-id, versioning, throttling) plus the resource paths exercised by the community MCP client
+  at https://github.com/shaank0/todyl-mcp. Todyl publishes no public conventions or API style guide.
+api: Todyl External API
+base_url: https://api.todyl.com
+auth:
+  style: paired API-key headers (X-Todyl-Client-Id + X-Todyl-Access-Token)
+  transport: header
+  detail: authentication/todyl-authentication.yml
+  confidence: high
+  evidence: >-
+    Probed: the 401 code changes from auth_missing_token to auth_malformed_token when the headers
+    are present but invalid.
+versioning:
+  style: path
+  current: v1
+  example: https://api.todyl.com/v1/devices
+  policy_published: false
+  confidence: high
+  evidence: Probed — /v1/devices returns Todyl's own 401 envelope; the unversioned root does not expose a resource surface.
+error_envelope:
+  shape: '{"error":{"code","message","request_id"}}'
+  rfc9457: false
+  detail: errors/todyl-error-codes.yml
+  confidence: high
+request_id_tracing:
+  supported: true
+  response_header: x-request-id
+  body_field: error.request_id
+  prefix: req_
+  request_header: unknown
+  confidence: high
+  note: >-
+    Todyl returns a correlation id on error responses in both the header and the body. Whether a
+    client-supplied request id is honoured on the way in was not established.
+rate_limit_signaling:
+  standard_headers: false
+  detail: rate-limits/todyl-rate-limits.yml
+  confidence: high
+  note: Retry-After only, on a Cloudflare plain-text 429 that is not the JSON envelope.
+pagination:
+  style: unverified
+  confidence: low
+  note: >-
+    The community MCP client sweeps list endpoints with a `limit` query parameter and a page loop,
+    which implies a paginated collection response, but the parameter names, cursor/offset model and
+    response envelope could not be observed because every collection endpoint is 401 without
+    credentials. NOT recorded as fact; no public documentation states it.
+field_expansion:
+  supported: unknown
+sparse_fieldsets:
+  supported: unknown
+metadata:
+  supported: unknown
+idempotency:
+  supported: unknown
+  header: null
+  confidence: none
+  note: >-
+    No idempotency key, header or retention policy is documented anywhere public, and no write
+    surface could be reached to observe one. Recorded as unknown rather than `na`: Todyl very likely
+    has write endpoints behind the token wall, so this is an unmeasurable, not an absence. No
+    Idempotency pointer is emitted.
+dry_run_mode:
+  supported: unknown
+  note: Same reason as idempotency — no reachable write surface, no public reference.
+reversibility:
+  grade: unknown
+  operations: []
+  note: >-
+    Reversibility could not be graded. The only endpoints evidenced for this API are reads
+    (/v1/devices, /v1/deployment-groups, /v1/billing/invoices), and no public reference documents a
+    write surface, let alone a cancel/undo/restore path or a window. This is deliberately NOT
+    recorded as `na` — `na` would assert Todyl ships a read-only API, and nothing observed supports
+    that claim. It is also deliberately NOT recorded as `documented`: Todyl states no reversal
+    operation and no window anywhere a member of the public can read, and inventing a window here
+    is the one error in this pipeline that could cost a user real money.
+  blocker: >-
+    api.todyl.com returns 401 on every path including /openapi.json; the reference is inside the
+    customer-authenticated knowledge base.
+observed_resources:
+- path: /v1/devices
+  method: GET
+  confidence: medium
+  source: community MCP client (third-party); the path itself returns Todyl's own 401 envelope when probed
+- path: /v1/deployment-groups
+  method: GET
+  confidence: low
+  source: community MCP client (third-party); not independently probed
+- path: /v1/billing/invoices
+  method: GET
+  confidence: low
+  source: community MCP client (third-party); not independently probed
+observed_resources_note: >-
+  These are LEADS, not a contract. They are recorded because they are the only evidence of Todyl's
+  resource surface that exists in public, and they are labelled with the confidence that earns. No
+  OpenAPI, no skills and no crosswalk were derived from them.
+cross_links:
+  authentication: authentication/todyl-authentication.yml
+  errors: errors/todyl-error-codes.yml
+  rate_limits: rate-limits/todyl-rate-limits.yml
+  lifecycle: lifecycle/todyl-lifecycle.yml

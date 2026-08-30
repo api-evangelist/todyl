@@ -1,0 +1,94 @@
+generated: '2026-08-30'
+method: searched
+source: >-
+  https://www.todyl.com/ (footer AICPA SOC badge, HTTP 200), https://www.todyl.com/system-description
+  (HTTP 200), https://www.todyl.com/platform/governance-risk-compliance, live TLS/DNS probes recorded
+  in security/todyl-domain-security.yml, and live unauthenticated probes of https://api.todyl.com.
+api: Todyl External API
+standards:
+- id: tls-1.3
+  conforms: true
+  evidence: >-
+    Probed 2026-08-30 — both www.todyl.com and api.todyl.com negotiate TLSv1.3.
+- id: dnssec
+  conforms: true
+  evidence: DNSKEY present for todyl.com (probed).
+- id: caa
+  conforms: true
+  evidence: >-
+    todyl.com publishes six issuewild CAA records (awstrust.com, comodoca.com, digicert.com,
+    letsencrypt.org, pki.goog, ssl.com).
+- id: spf
+  conforms: true
+  evidence: SPF record present for todyl.com (probed).
+- id: dmarc
+  conforms: true
+  evidence: DMARC present with policy p=quarantine (probed).
+- id: hsts
+  conforms: partial
+  evidence: >-
+    www.todyl.com returns Strict-Transport-Security but with max-age=0, which disables the policy
+    rather than enforcing it. api.todyl.com returned no HSTS header on the probed responses.
+- id: rfc9457
+  conforms: false
+  evidence: >-
+    The API's error envelope is a vendor JSON shape ({"error":{"code","message","request_id"}})
+    served as application/json, not application/problem+json. See errors/todyl-error-codes.yml.
+- id: rfc9116
+  conforms: false
+  evidence: >-
+    No security.txt on any Todyl-controlled host. The 200 at status.todyl.com/.well-known/security.txt
+    is Atlassian Statuspage's document (Canonical www.atlassian.com), not Todyl's.
+- id: oauth2
+  conforms: false
+  evidence: >-
+    Authentication is a paired API-key header scheme (X-Todyl-Client-Id + X-Todyl-Access-Token). No
+    OAuth 2.0 surface; /.well-known/oauth-authorization-server on api.todyl.com returns 401, and
+    www.todyl.com returns 404.
+- id: oidc
+  conforms: false
+  evidence: /.well-known/openid-configuration returns 404 on www.todyl.com and is not anonymous on api.todyl.com.
+- id: ratelimit-headers
+  conforms: false
+  evidence: >-
+    No RateLimit-* or X-RateLimit-* headers on any observed response; only Retry-After on a
+    Cloudflare 429. See rate-limits/todyl-rate-limits.yml.
+- id: openapi
+  conforms: false
+  evidence: >-
+    No OpenAPI or Swagger document is reachable. /openapi.json and /v1/openapi.json on api.todyl.com
+    both return 401 auth_missing_token; www.todyl.com returns its Webflow 404; developer.todyl.com
+    and portal.todyl.com return an SPA shell for every path.
+compliance:
+  programs:
+  - name: AICPA SOC
+    published: true
+    evidence: >-
+      An AICPA SOC badge image (alt "AICPA SOC Badge | Todyl") is served in the footer of
+      https://www.todyl.com/ (HTTP 200). Todyl displays the badge on its own site; it does not link
+      to a report, a trust center, or a named report type/period, so the specific SOC report
+      (SOC 1 / SOC 2 Type I / Type II) cannot be established from public material.
+    report_url: null
+    trust_center: null
+  - name: >-
+      Infrastructure-provider certifications cited in Todyl's System Description
+    published: true
+    evidence: >-
+      https://www.todyl.com/system-description states that Todyl's cloud and datacenter providers
+      hold ISO 27001, SOC 2, FedRAMP, DoD CSM and PCI DSS. Recorded verbatim as what it is —
+      certifications of Todyl's SUPPLIERS, explicitly not asserted as Todyl's own.
+    report_url: https://www.todyl.com/system-description
+  grc_product_note: >-
+    Todyl sells a GRC module that maps customer environments to frameworks (CIS, NIST, HIPAA, CMMC
+    and similar). That is a product capability, not a conformance claim about Todyl's own API, and
+    is deliberately not recorded as conformance here.
+domain_standard:
+  declared: false
+  note: >-
+    Checked and absent. Todyl's market (MSP security operations) has candidate domain standards —
+    OCSF, STIX/TAXII, Sigma, MITRE ATT&CK, OpenC2 — but domain_standard_conformance reads the
+    CONTRACT, and Todyl publishes no reachable contract to read. Its two public first-party
+    integration repos (github.com/todylcom/aws_integrations, github.com/todylcom/microsoft_integrations)
+    contain only log-shipping setup scripts (a Lambda function, two PowerShell scripts), with no
+    schema, mapping or taxonomy declaration. Reward-only check: recorded as absent, not penalised,
+    and nothing is invented to fill the slot.

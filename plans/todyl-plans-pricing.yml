@@ -1,0 +1,18 @@
+generated: '2026-08-30'
+method: searched
+source: >-
+  https://www.todyl.com/request-pricing (HTTP 200), https://www.todyl.com/pricing (HTTP 404),
+  https://www.todyl.com/contact (HTTP 200), and the full www.todyl.com sitemap (518 URLs, HTTP 200) —
+  which contains no pricing, plans or tier page.
+plan_count: 0
+plans: []
+model: contact-sales
+currency: null
+note: >-
+  Todyl publishes no prices and no named tiers. The only pricing surface is a lead form at
+  https://www.todyl.com/request-pricing ("Cybersecurity for Any Need | Request Pricing"), and
+  /pricing itself returns 404. The platform is sold modularly to MSPs and solution providers through
+  a partner/quote motion — buyers select modules (SASE, Endpoint Security, SIEM, MXDR, GRC) and are
+  quoted per endpoint — but no rate card, no per-module price, and no included quota or overage is
+  published anywhere a member of the public can read. API access is not separately priced in public
+  either; External API tokens are a portal feature of the platform subscription.

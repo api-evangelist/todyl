@@ -1,0 +1,28 @@
+generated: '2026-08-30'
+method: probed
+source: live DNS/TLS/HTTP probes of apis.yml + OpenAPI hosts
+hosts:
+- host: www.todyl.com
+  https: true
+  tls_version: TLSv1.3
+  cert_expires: Oct 13 20:13:19 2026 GMT
+  hsts: true
+  hsts_max_age: 0
+- host: api.todyl.com
+  https: true
+  tls_version: TLSv1.3
+  cert_expires: Nov 19 14:08:06 2026 GMT
+  hsts: null
+domains:
+- domain: todyl.com
+  dnssec: true
+  caa:
+  - 0 issuewild "awstrust.com"
+  - 0 issuewild "comodoca.com"
+  - 0 issuewild "digicert.com; cansignhttpexchanges=yes"
+  - 0 issuewild "letsencrypt.org"
+  - 0 issuewild "pki.goog; cansignhttpexchanges=yes"
+  - 0 issuewild "ssl.com"
+  spf: true
+  dmarc: true
+  dmarc_policy: quarantine

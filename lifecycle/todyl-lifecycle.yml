@@ -1,0 +1,51 @@
+generated: '2026-08-30'
+method: searched
+source: >-
+  https://status.todyl.com (Atlassian Statuspage, HTTP 200), https://status.todyl.com/api/v2/status.json
+  (HTTP 200), https://www.todyl.com/news (HTTP 200), and live probes of https://api.todyl.com.
+api: Todyl External API
+versioning:
+  scheme: path
+  current_version: v1
+  policy_published: false
+  policy_url: null
+  note: The API is path-versioned at /v1. No public versioning policy document exists.
+deprecation:
+  policy_published: false
+  policy_url: null
+  sunset_header: unknown
+  deprecation_header: unknown
+  rfc8594: unknown
+  note: >-
+    No deprecation or sunset policy is published, and no RFC 8594 Sunset/Deprecation headers were
+    observed on the anonymous 401 responses. No Deprecation pointer is emitted.
+status_page:
+  published: true
+  url: https://status.todyl.com
+  provider: Atlassian Statuspage
+  http_status: 200
+  machine_readable: true
+  api: https://status.todyl.com/api/v2/status.json
+  api_http_status: 200
+  api_note: >-
+    Statuspage's standard v2 API is served, so an agent can read Todyl's operational state without
+    scraping — GET /api/v2/status.json returned
+    {"status":{"indicator":"none","description":"All Systems Operational"}} on 2026-08-30.
+  components_url: https://status.todyl.com/api/v2/components.json
+  incidents_url: https://status.todyl.com/api/v2/incidents.json
+  subscribe: true
+sla:
+  published: false
+  url: null
+  note: No public SLA or uptime commitment was found on todyl.com.
+changelog:
+  published: false
+  url: null
+  note: >-
+    Todyl publishes press releases at https://www.todyl.com/news and a marketing blog at
+    https://www.todyl.com/blog, but neither is a dated, versioned release-notes feed. Platform
+    release notes appear to live inside the authenticated knowledge base. No ChangeLog pointer is
+    emitted — a press-release index is not a changelog.
+deprecated_operations: []
+deprecated_operations_note: >-
+  Cannot be derived — no OpenAPI is reachable (api.todyl.com/openapi.json returns 401).

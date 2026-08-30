@@ -1,23 +1,126 @@
 aid: todyl
 name: Todyl
-description: 'Todyl is a company surfaced via the API Evangelist harvest backlog (source: secondary-market)
-  and added to the network as a stub for full-pipeline profiling.'
+description: >-
+  Todyl is a Denver, Colorado cybersecurity company that sells a single-agent, cloud-native security
+  platform to managed service providers, solution providers and internal IT teams. The Todyl Security
+  Platform consolidates modules that are usually bought separately — SASE (Secure Access Service Edge,
+  delivered over Todyl's Secure Global Network), Endpoint Security (EDR/NGAV), a cloud-native SIEM,
+  MXDR (24x7 managed extended detection and response with a human SOC), GRC (governance, risk and
+  compliance), and Security Automation playbooks — behind one agent and one multi-tenant portal.
+  Todyl operates a live production REST API at https://api.todyl.com (path-versioned at /v1) that
+  partners use to enumerate devices, deployment groups and billing data across their tenants, and it
+  integrates with PSA/RMM tooling such as Autotask and ConnectWise. Access is authenticated with an
+  External API token pair issued inside the Todyl portal; the API reference itself is published only
+  in the customer-authenticated knowledge base, so no public OpenAPI, reference page or developer
+  portal exists at the time of this profile.
+image: https://cdn.prod.website-files.com/6961173a0b3c0ce2c689dccc/696157d64c5080ff6aff85a5_todyl-logo.svg
 url: https://raw.githubusercontent.com/api-evangelist/todyl/refs/heads/main/apis.yml
 x-type: company
 x-source: harvest:secondary-market
-x-tier: stub
-x-tier-reason: harvest
+x-tier: profiled
+x-tier-reason: enrichment
 specificationVersion: '0.20'
 created: '2026-08-30'
 modified: '2026-08-30'
 tags:
 - Company
-apis: []
+- Cybersecurity
+- Security
+- Managed Service Providers
+- SASE
+- SIEM
+- Endpoint Security
+- Managed Detection and Response
+- Governance Risk and Compliance
+- Zero Trust
+- Networking
+apis:
+- name: Todyl External API
+  description: >-
+    Todyl's External API is a path-versioned REST API served from https://api.todyl.com. Probing it
+    unauthenticated returns Todyl's own JSON error envelope
+    ({"error":{"code":"auth_missing_token","message":"Credentials missing or invalid.","request_id":"req_..."}}),
+    and supplying the X-Todyl-Client-Id / X-Todyl-Access-Token header pair changes the code to
+    auth_malformed_token, confirming those are the credential headers the service recognises. Tokens
+    are minted in the Todyl portal under Account -> Developer APIs -> External API Tokens. Every path
+    probed — including /openapi.json, /v1/openapi.json and /.well-known/* — answers 401, so no
+    machine-readable contract is reachable without credentials.
+  humanURL: https://www.todyl.com/support
+  baseURL: https://api.todyl.com
+  tags:
+  - Security
+  - Devices
+  - Billing
+  properties:
+  - type: Authentication
+    url: authentication/todyl-authentication.yml
+  - type: ErrorCatalog
+    url: errors/todyl-error-codes.yml
+  - type: RateLimits
+    url: rate-limits/todyl-rate-limits.yml
+  - type: Conventions
+    url: conventions/todyl-conventions.yml
+  - type: Lifecycle
+    url: lifecycle/todyl-lifecycle.yml
 maintainers:
 - FN: Kin Lane
   email: kin@apievangelist.com
 - FN: APIs.json
   email: info@apis.io
 common:
+- type: DomainSecurity
+  url: security/todyl-domain-security.yml
 - type: Website
-  url: https://forgeglobal.com/todyl_stock/
+  url: https://www.todyl.com/
+- type: Blog
+  url: https://www.todyl.com/blog
+- type: BlogRSS
+  url: https://www.todyl.com/blog/rss.xml
+- type: Support
+  url: https://www.todyl.com/support
+- type: StatusPage
+  url: https://status.todyl.com
+- type: Pricing
+  url: https://www.todyl.com/request-pricing
+- type: SignUp
+  url: https://portal.todyl.com/session/login
+- type: TermsOfService
+  url: https://www.todyl.com/terms
+- type: PrivacyPolicy
+  url: https://www.todyl.com/privacy
+- type: Compliance
+  url: https://www.todyl.com/system-description
+- type: GitHubOrganization
+  url: https://github.com/todylcom
+- type: LinkedIn
+  url: https://www.linkedin.com/company/todyl
+- type: Conformance
+  url: conformance/todyl-conformance.yml
+- type: LLMsTxt
+  url: llms/todyl-llms.txt
+- type: Plans
+  url: plans/todyl-plans-pricing.yml
+x-enrichment:
+  date: '2026-08-30'
+  status: minimal
+  artifacts_added: 12
+  pass: local-v1
+x-coverage:
+  state: gated
+  reason: customer-only-docs
+  detail: >-
+    Todyl runs a live production REST API at api.todyl.com, but the host authenticates EVERY path —
+    /openapi.json, /v1/openapi.json and /.well-known/* all return 401 auth_missing_token — and the
+    API reference itself is published only inside the customer knowledge base at support.todyl.com,
+    whose root serves a Next.js sign-in page marked noindex/nofollow, so an integrator cannot read
+    the contract before buying.
+  evidence:
+  - url: https://api.todyl.com/openapi.json
+    status: 401
+  - url: https://api.todyl.com/v1/devices
+    status: 401
+  - url: https://support.todyl.com/
+    status: 200
+  - url: https://www.todyl.com/developers
+    status: 404
+  checked: '2026-08-30'

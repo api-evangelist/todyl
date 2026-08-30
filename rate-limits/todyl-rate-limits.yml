@@ -1,0 +1,51 @@
+generated: '2026-08-30'
+method: probed
+source: >-
+  Observed directly against https://api.todyl.com/ during unauthenticated discovery probes on
+  2026-08-30. Todyl publishes no rate-limit documentation on any public page.
+api: Todyl External API
+base_url: https://api.todyl.com
+documented: false
+docs: null
+limit_count: 0
+limits: []
+observed:
+- scope: per-client-ip (unauthenticated, Cloudflare edge)
+  window: unknown
+  limit: unknown
+  note: >-
+    Rapid sequential unauthenticated requests to api.todyl.com trip a Cloudflare rate-limiting rule
+    within well under ten requests. The published number is not stated anywhere; only the response
+    is observable.
+  response:
+    status: 429
+    content_type: text/plain; charset=UTF-8
+    body: 'error code: 1015'
+    headers:
+      Retry-After: '90'
+    note: >-
+      This is the Cloudflare error-1015 plain-text body, NOT Todyl's JSON error envelope. A client
+      that only parses application/json will fail to read the throttle and must branch on the
+      status code. Retry-After was present and carried 90-91 seconds on every observation.
+response_headers:
+  ratelimit_standard: absent
+  observed:
+  - name: Retry-After
+    seen_on: 429
+    value_example: '90'
+  absent:
+  - X-RateLimit-Limit
+  - X-RateLimit-Remaining
+  - X-RateLimit-Reset
+  - RateLimit-Limit
+  - RateLimit-Remaining
+  - RateLimit-Reset
+  note: >-
+    No RFC 9239 / draft RateLimit-* headers and no X-RateLimit-* headers were returned on any 2xx,
+    401 or 429 response observed. An agent gets no budget signal ahead of exhaustion — only
+    Retry-After after it has already been throttled.
+authenticated_limits:
+  known: false
+  note: >-
+    Whether authenticated External API tokens carry a separate, higher, or documented quota could
+    not be established without a customer account.

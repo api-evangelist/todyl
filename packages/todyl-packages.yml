@@ -1,0 +1,34 @@
+generated: '2026-08-30'
+method: searched
+source: >-
+  Registry searches on 2026-08-30 — registry.npmjs.org (q=todyl, 0 results), pypi.org/pypi/todyl/json
+  (HTTP 404), and a GitHub-wide repository search plus a full listing of Todyl's own public
+  organisation https://github.com/todylcom (6 public repos).
+package_count: 0
+packages: []
+note: >-
+  Todyl publishes no first-party client library on any registry. npm returns zero packages for
+  "todyl"; PyPI has no "todyl" project. Todyl's public GitHub organisation (todylcom) holds six
+  repositories and none of them is an SDK: three are unmodified forks of Go archive libraries
+  (archiver, sevenzip, rardecode, last pushed 2023), one is TheDevice (C, the Todyl device firmware
+  project), and two are SIEM log-ingestion templates — aws_integrations (a single Lambda function,
+  directory_service_cloudwatch_sqs_s3.py) and microsoft_integrations (entra_identity_setup.ps1 and
+  o365_siem_ingestion.ps1). Those two are genuine first-party integration helpers but they are setup
+  scripts for shipping logs INTO Todyl's SIEM, not clients for the External API, and neither is
+  distributed through a package registry. No SDKs pointer is emitted.
+third_party:
+- name: todyl-mcp
+  repo: https://github.com/shaank0/todyl-mcp
+  registry: null
+  version: null
+  published: null
+  official: false
+  language: TypeScript
+  last_pushed: '2026-08-13'
+  note: >-
+    Community (not Todyl) MCP server wrapping the Todyl External API. Recorded because it is the only
+    public client of any kind for this API and it is the source that names the token-creation path
+    (Todyl portal -> Account -> Developer APIs -> External API Tokens). package.json marks it
+    "private": true with version 0.1.0, so it is not published to npm and has no registry metadata to
+    read — version and published are null because there is nothing to query, not because the check
+    was skipped.

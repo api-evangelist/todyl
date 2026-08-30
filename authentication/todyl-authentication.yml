@@ -1,0 +1,57 @@
+generated: '2026-08-30'
+method: probed
+source: >-
+  Live unauthenticated probes of https://api.todyl.com/v1/devices on 2026-08-30, corroborated by the
+  token-creation path named in the community MCP client at
+  https://github.com/shaank0/todyl-mcp/blob/main/src/config.ts
+api: Todyl External API
+base_url: https://api.todyl.com
+docs: null
+docs_note: >-
+  Todyl publishes no public authentication reference page. The API reference lives in the
+  customer-authenticated knowledge base at support.todyl.com, which answers the root URL with a
+  sign-in page (Next.js SignInPage route, robots noindex/nofollow/noarchive).
+schemes:
+- id: todyl_external_api_token
+  type: apiKey
+  in: header
+  names:
+  - X-Todyl-Client-Id
+  - X-Todyl-Access-Token
+  description: >-
+    A paired credential: a client identifier and an access token, both sent as request headers on
+    every call. Todyl calls this an "External API token".
+  evidence:
+    - probe: GET https://api.todyl.com/v1/devices with no credentials
+      status: 401
+      body: '{"error":{"code":"auth_missing_token","message":"Credentials missing or invalid.","request_id":"req_..."}}'
+    - probe: >-
+        GET https://api.todyl.com/v1/devices with X-Todyl-Client-Id and X-Todyl-Access-Token set to
+        deliberately invalid values
+      status: 401
+      body: '{"error":{"code":"auth_malformed_token","message":"Credentials missing or invalid.","request_id":"req_..."}}'
+      note: >-
+        The error code CHANGED from auth_missing_token to auth_malformed_token, which is what proves
+        the service recognises these two header names. Without that differential the header names
+        would be an unverified third-party claim.
+  token_issuance:
+    where: Todyl portal — Account -> Developer APIs -> External API Tokens
+    portal: https://portal.todyl.com/session/login
+    self_service: true
+    verified: >-
+      Named verbatim in the community MCP client's required-env error message; the portal path
+      itself is behind the customer login and was not opened.
+oauth2: false
+openid_connect: false
+mutual_tls: unknown
+scopes:
+  documented: false
+  note: >-
+    No scope or permission reference is public. Whether External API tokens carry scopes, and what
+    they are, cannot be established without a customer account.
+gating:
+  contract_public: false
+  reference_public: false
+  note: >-
+    Every path on api.todyl.com — including /openapi.json, /v1/openapi.json and /.well-known/* —
+    returns 401 auth_missing_token. There is no anonymous surface on the API host at all.

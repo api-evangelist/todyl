@@ -1,0 +1,55 @@
+generated: '2026-08-30'
+method: searched
+source: >-
+  GitHub repository search (q=todyl, 13 results), Todyl's own public organisation
+  https://github.com/todylcom (6 repos), npm registry search (0 results), and the full
+  www.todyl.com sitemap (518 URLs) — none of which contains an MCP server, an /mcp endpoint, or any
+  agent-facing surface published by Todyl.
+api: Todyl External API
+status: none
+deployment:
+  mode: none
+  endpoint: null
+  install: null
+  package: null
+  auth: unknown
+  verified: searched
+note: >-
+  Todyl ships no MCP server — neither a hosted remote endpoint nor a stdio package. No MCPServer
+  pointer is emitted in apis.yml, and no candidate tool list was derived: with no reachable OpenAPI
+  (api.todyl.com/openapi.json returns 401) there are no operations to derive one from, and inventing
+  one would produce a tool list that no contract backs. No tool crosswalk is emitted for the same
+  reason — a crosswalk requires both an MCP surface and an OpenAPI, and Todyl publishes neither.
+third_party_servers:
+- name: todyl-mcp
+  repo: https://github.com/shaank0/todyl-mcp
+  author: shaank0
+  official: false
+  first_party: false
+  last_pushed: '2026-08-13'
+  transport: streamable-http (Express, @modelcontextprotocol/sdk ^1.27.1)
+  distribution: >-
+    Source only. package.json is marked "private": true at version 0.1.0 — not published to npm, not
+    on any registry. A Dockerfile and a publish workflow exist in the repo.
+  upstream_base_url: https://api.todyl.com
+  auth: >-
+    Requires TODYL_CLIENT_ID and TODYL_ACCESS_TOKEN, sent upstream as X-Todyl-Client-Id and
+    X-Todyl-Access-Token. The operator must first create an External API token in the Todyl portal.
+  tools:
+  - name: list_devices
+    backing_call: GET /v1/devices
+  - name: get_device
+    backing_call: GET /v1/devices
+  - name: device_posture_summary
+    backing_call: GET /v1/devices (aggregated client-side)
+  - name: list_deployment_groups
+    backing_call: GET /v1/deployment-groups
+  - name: list_invoices
+    backing_call: GET /v1/billing/invoices (start_date, end_date, limit)
+  - name: tenant_report
+    backing_call: composite over the three collections above
+  caution: >-
+    This is recorded as INTELLIGENCE about the ecosystem, not as a Todyl artifact. It is a
+    third-party project and must never be credited to Todyl as an agent surface. Its value here is
+    that it is the only public evidence of Todyl's resource paths, and it corroborates the auth
+    header names that were independently confirmed by probing api.todyl.com directly.
