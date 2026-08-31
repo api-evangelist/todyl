@@ -1,0 +1,21 @@
+{
+  "repo": "todyl",
+  "feeds": [
+    {
+      "source": "https://www.todyl.com/",
+      "feed_url": "https://www.todyl.com/",
+      "title": "",
+      "saved": 0,
+      "method": "none"
+    },
+    {
+      "source": "https://www.todyl.com/blog",
+      "feed_url": "https://www.todyl.com/blog/rss.xml",
+      "title": "",
+      "saved": 5,
+      "method": "discovered"
+    }
+  ],
+  "post_count": 5,
+  "fetched": "2026-08-30T22:33:40Z"
+}
