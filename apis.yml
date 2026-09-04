@@ -13,6 +13,21 @@ description: >-
   External API token pair issued inside the Todyl portal; the API reference itself is published only
   in the customer-authenticated knowledge base, so no public OpenAPI, reference page or developer
   portal exists at the time of this profile.
+accessModel:
+  pricing: unknown
+  onboarding: approval
+  trial: false
+  try_now: false
+  public: false
+  label: Requires approval
+  confidence: medium
+  source:
+  - plans
+  - authentication
+  - rate-limits
+  - security
+  generated: '2026-09-03'
+  method: derived
 image: https://cdn.prod.website-files.com/6961173a0b3c0ce2c689dccc/696157d64c5080ff6aff85a5_todyl-logo.svg
 url: https://raw.githubusercontent.com/api-evangelist/todyl/refs/heads/main/apis.yml
 x-type: company
