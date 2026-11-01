@@ -64,5 +64,105 @@
 > Full detail: **[Where this data comes from](https://apievangelist.com/about/where-our-data-comes-from)**
 <!-- API-EVANGELIST-PROVENANCE:END -->
 
-Todyl is a company surfaced via the API Evangelist harvest backlog (source: secondary-market) and added to the network as a stub for full-pipeline profiling.
-- https://forgeglobal.com/todyl_stock/
+Todyl is a Denver, Colorado cybersecurity company that sells a single-agent, cloud-native security platform to managed service providers, solution providers and internal IT teams. The Todyl Security Platform consolidates modules that are usually bought separately — SASE (Secure Access Service Edge, delivered over Todyl's Secure Global Network), Endpoint Security (EDR/NGAV), a cloud-native SIEM, MXDR (24x7 managed extended detection and response with a human SOC), GRC (governance, risk and compliance), and Security Automation playbooks — behind one agent and one multi-tenant portal. Todyl operates a live production REST API at https://api.todyl.com (path-versioned at /v1) that partners use to enumerate devices, deployment groups and billing data across their tenants, and it integrates with PSA/RMM tooling such as Autotask and ConnectWise. Access is authenticated with an External API token pair issued inside the Todyl portal; the API reference itself is published only in the customer-authenticated knowledge base, so no public OpenAPI, reference page or developer portal exists at the time of this profile.
+
+**Areas:** Company · Cybersecurity · Security · Managed Service Providers · SASE · SIEM · Endpoint Security · Managed Detection and Response · Governance Risk and Compliance · Zero Trust · Networking
+
+## Todyl on APIs.io
+
+Everything profiled for Todyl is published on APIs.io rather than in this repository. Start at the provider page — **[apis.io/providers/todyl/](https://apis.io/providers/todyl/)** — or go straight to one of the APIs or properties below.
+
+### APIs (1)
+
+- [Todyl External API](https://apis.io/apis/todyl/todyl-external-api/) — Todyl's External API is a path-versioned REST API served from https://api.todyl.com. Probing it unauthenticated returns Todyl's own JSON error envelope…
+
+### Published properties
+
+Each property below is a page on APIs.io carrying the machine-readable artifact and what it says.
+
+#### Security (2)
+
+Authentication, trust centre, and vulnerability disclosure.
+
+- [Todyl Authentication](https://apis.io/security/todyl/todyl-authentication/)
+- [Todyl Domain Security](https://apis.io/security/todyl/todyl-domain-security/)
+
+#### Plans and pricing (1)
+
+Published plans, tiers and prices.
+
+- [Todyl Plans Pricing](https://apis.io/plans/todyl/todyl-plans-pricing/)
+
+#### Rate limits (1)
+
+Published request limits.
+
+- [Todyl Rate Limits](https://apis.io/rate-limits/todyl/todyl-rate-limits/)
+
+## Where to find this API
+
+Links to the company's own pages. This repository publishes no copy of their specifications — the canonical document is theirs and lives at the URLs below.
+
+- [Website](https://www.todyl.com/)
+- [Pricing](https://www.todyl.com/request-pricing)
+- [Sign up](https://portal.todyl.com/session/login)
+- [Support](https://www.todyl.com/support)
+- [Blog](https://www.todyl.com/blog)
+- [Compliance](https://www.todyl.com/system-description)
+- [Terms of service](https://www.todyl.com/terms)
+- [Privacy policy](https://www.todyl.com/privacy)
+- [GitHub](https://github.com/todylcom)
+- [Status](https://status.todyl.com)
+
+## API Evangelist rating
+
+**Kin Score 25.7** — emerging · rubric 0.24.0 · scored 2026-10-17
+
+| Facet | Score |
+|---|---|
+| Discoverability | 73.2 |
+| Contract quality | 0.0 |
+| Contract governance | 18.2 |
+| Operational transparency | 18.4 |
+| Developer ergonomics | 19.0 |
+| Access clarity | 39.5 |
+
+**Agent readiness 7.9** — agent-aware
+
+| Agent-readiness dimension | Result |
+|---|---|
+| Spec Presence | — |
+| Agentic Access | — |
+| Reversibility Documented | — |
+| MCP Server | — |
+| Auth Clarity | bearer (partial credit) |
+| Idempotency | — |
+| Error Semantics | documented (partial credit) |
+| OpenAPI Examples | — |
+| Rate Limit Signal | documented (partial credit) |
+| Event Surface Described | — |
+| Agent Skills | — |
+| Well Known Catalog | — |
+| Consent Identity | — |
+| Agent Card | — |
+| Dry Run Mode | — |
+| Delegated Identity | — |
+| Protected Resource Metadata | — |
+| Dynamic Client Registration | — |
+| Agentic Commerce | — |
+
+**Regulatory alignment 29.4** — Horizontal (data, software, accessibility, platform)
+
+The rubric is published at [github.com/api-evangelist/kin-score](https://github.com/api-evangelist/kin-score). The per-check breakdown behind these numbers — which checks were earned, partial or missed — along with score history and how this provider compares to its peers, is available at [apis.io/providers/todyl/](https://apis.io/providers/todyl/).
+
+## How this profile is made
+
+API Evangelist profiles a company's public API surface the way a developer would find it: the website, developer portal and documentation, the specifications it publishes, its public repositories, and its pricing, status and changelog pages. From that it derives the properties above — contracts split per API, workflows, schemas, collections, governance rules, plans and rate limits — and scores them against the published [Kin Score rubric](https://github.com/api-evangelist/kin-score).
+
+The artifacts are published on [APIs.io](https://apis.io), not in this repository. This repository is the public record for Todyl: the place to say something is wrong, missing or out of date, and to ask for a re-score or a removal.
+
+## Open an issue
+
+- **Something about this listing** — a wrong description, a missing API, a stale artifact or a question about the rating: [open an issue on this repository](https://github.com/api-evangelist/todyl/issues/new).
+- **A new API, or one that is not in the catalog yet** — [submit it on APIs.io](https://apis.io/add/).
+- **Anything else** — [the APIs.io inbox](https://github.com/api-search/inbox/issues/new) or [info@apievangelist.com](mailto:info@apievangelist.com).
